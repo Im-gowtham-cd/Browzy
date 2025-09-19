@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Lacotte';
+    src: url('./font/Lacotte.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Richis';
+    src: url(./font/Richis\ Stiller.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    color: #F0E7D6;
+    width: 400px;
+    height: 100vh;
+    /* border: 5px solid #F0E7D6; */
+}
+
+.exe {
+    background: #EA2E00;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+.nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    align-items: center;
+    height: 100px;
+    /* border: 1px solid #F0E7D6; */
+}
+
+.nav h1 {
+    font-family: 'Lacotte';
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 100%;
+    /* padding: 20px; */
+}
+
+.nav span i {
+    font-size: 64px;
+}
+
+.toggle {
+    position: relative;
+}
+
+.toggle input {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    opacity: 0;
+}
+
+.exe p {
+    width: 90%;
+    /* border: 1px solid #F0E7D6; */
+    margin-left: 5%;
+    font-family: 'Poppins';
+    text-align: justify;
+}
+
+.exe h2 {
+    font-family: 'Poppins';
+    /* margin-left: 5%; */
+    margin-top: 30px;
+    font-size: 52px;
+    font-weight: 600;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.ui {
+    max-height: 300px;
+    overflow: scroll;
+    /* border: 1px solid #F0E7D6; */
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* overflow: scroll; */
+}
+
+.ui::before {
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 10px;
+    border-radius: 10px;
+    left: 10px;
+    background: #F0E7D6;
+}
+
+.ui .uicard {
+    height: 80px;
+    width: 86%;
+    margin-left: 7%;
+    border: 1px solid #F0E7D6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    /* gap: 10px; */
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.uicard img{
+    height: 70%;
+    width: 20%;
+
+}
+
+.uicard span{
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid wheat; */
+    width: 72%;
+    height: 90%;
+    /* align-items: flex-end; */
+}
+
+.uicard p:first-child{
+    font-size: 25px;
+    font-weight: 600;
+    text-align: end;
+}
+
+.uicard p:last-child{
+    text-align: end;
+    font-size: 12px;
+    /* font-weight: 600; */
+}
+
+.uicard button{
+    position: absolute;
+    color: #EA2E00;
+    background: #F0E7D6;
+    border: none;
+    width: 100%;
+    height: 55%;
+    font-size: 30px;
+    font-family: 'Lacotte';
+    bottom: -40px;
+    right: 0;
+}
+
+.uicard:hover button{
+    bottom: 0;
+    transition: .3s all;
+}
+
+.contact{
+    font-size: 50px;
+    /* text-align: center; */
+    font-family: 'Poppins';
+    display: flex;
+    /* justify-content: center; */
+    margin-left: 30px;
+    font-weight: 700;
+    margin-top: 30px;
+    /* width: 100%; */
+}
+
