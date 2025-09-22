@@ -41,6 +41,7 @@ body {
     gap: 80px;
     align-items: center;
     height: 100px;
+    margin-top: 20px;
     /* border: 1px solid #F0E7D6; */
 }
 
@@ -67,6 +68,10 @@ body {
     opacity: 0;
 }
 
+.exe-p{
+    margin-top: 20px;
+}
+
 .exe p {
     width: 90%;
     /* border: 1px solid #F0E7D6; */
@@ -78,7 +83,7 @@ body {
 .exe h2 {
     font-family: 'Poppins';
     /* margin-left: 5%; */
-    margin-top: 30px;
+    margin-top: 50px;
     font-size: 52px;
     font-weight: 600;
     margin-right: 10px;
