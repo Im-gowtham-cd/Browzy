@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const timeElement = document.getElementById('time');
     const amPmElement = document.getElementById('am-pm');
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelFavoriteBtn = document.getElementById('cancel-favorite');
     const recentSites = document.getElementById('recent-sites');
 
-    // --- Date and Time Logic ---
+    // --- Date and Time Logic (Unchanged) ---
     const updateTime = () => {
         const now = new Date();
         let hours = now.getHours();
@@ -38,9 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateTime, 1000);
     updateTime();
 
-    // --- Weather Functionality ---
+    // --- Weather Functionality (Unchanged) ---
     const fetchWeather = async () => {
         try {
+            // Weather API call is retained as it uses a working public API
             const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=28.6139&longitude=77.2090&current_weather=true');
             const data = await response.json();
 
@@ -75,21 +75,60 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     fetchWeather();
 
-    const searchSuggestionsData = [
-        'google.com', 'youtube.com', 'facebook.com', 'twitter.com', 'instagram.com',
-        'linkedin.com', 'github.com', 'stackoverflow.com', 'reddit.com', 'wikipedia.org',
-        'amazon.com', 'netflix.com', 'spotify.com', 'gmail.com', 'yahoo.com'
-    ];
+    // --- REAL-TIME Search Suggestions Functionality ---
 
-    const showSuggestions = (query) => {
+    // Remove the static searchSuggestionsData array
+    // const searchSuggestionsData = [ ... ];
+
+    const fetchSearchSuggestions = async (query) => {
+        if (!query.trim()) return [];
+
+        // CONCEPTUAL API CALL for real-time suggestions.
+        // NOTE: Standard search engine suggestion APIs (like Google Suggest) are often
+        // protected by CORS or are not designed for direct client-side use.
+        // You would need a professional API (like a Google Custom Search or a
+        // dedicated suggestion service) and a valid API key for a true
+        // real-time implementation.
+        // For this example, we'll return a mock to demonstrate the flow,
+        // but this is where the real API call goes.
+
+        /*
+        try {
+            const apiKey = 'YOUR_CUSTOM_SEARCH_API_KEY'; // You need an actual key
+            const cx = 'YOUR_CUSTOM_SEARCH_ENGINE_ID'; // And a search engine ID
+            const apiUrl = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(query)}&alt=json`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            // Assuming the API returns a list of suggestions in data.items or similar
+            // You would need to parse the actual API response here.
+            // For now, returning a conceptual structure:
+            return data.items.map(item => item.title);
+        } catch (error) {
+            console.error('Error fetching search suggestions:', error);
+            // Fallback suggestions based on query
+            return [`${query} news`, `${query} wikipedia`, `search ${query}`];
+        }
+        */
+
+        // For a simple local demonstration of the flow without a backend/API key:
+        const lowerQuery = query.toLowerCase();
+        return [
+             `${lowerQuery} news`,
+             `${lowerQuery} wikipedia`,
+             `${lowerQuery} tutorial`,
+             `what is ${lowerQuery}`,
+             `how to ${lowerQuery}`
+        ].filter(item => item.includes(lowerQuery));
+    };
+
+
+    const showSuggestions = async (query) => {
         if (!query.trim()) {
             searchSuggestions.style.display = 'none';
             return;
         }
 
-        const filtered = searchSuggestionsData.filter(item =>
-            item.toLowerCase().includes(query.toLowerCase())
-        ).slice(0, 5);
+        const filtered = await fetchSearchSuggestions(query);
 
         if (filtered.length > 0) {
             searchSuggestions.innerHTML = filtered.map(item =>
@@ -102,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     searchInput.addEventListener('input', (e) => {
+        // Debounce might be needed for real API calls to reduce requests
         showSuggestions(e.target.value);
     });
 
@@ -152,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         performSearch(searchInput.value);
     });
 
-    // --- To-Do List Functionality ---
+    // --- To-Do List Functionality (Unchanged) ---
     let todos = JSON.parse(localStorage.getItem('berserkTodos')) || [];
 
     const saveTodos = () => {
@@ -212,27 +252,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTodos();
 
-    // --- News Functionality ---
+    // --- REAL-TIME News Functionality ---
     const fetchNews = async () => {
+        const NEWS_API_KEY = '389afaafb6d84ece8a6b9e1230b38eff'; // 🔑 IMPORTANT: REPLACE WITH YOUR ACTUAL NEWS API KEY
+        const NEWS_API_URL = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_API_KEY}`;
+
         try {
-            const response = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_NEWS_API_KEY');
+            const response = await fetch(NEWS_API_URL);
 
             if (!response.ok) {
-                throw new Error('API Error');
+                // Throw an error if the API call fails (e.g., due to invalid API key, rate limit)
+                throw new Error(`News API Error: ${response.statusText}`);
             }
 
             const data = await response.json();
-            displayNews(data.articles.slice(0, 6));
+            
+            if (data.articles && data.articles.length > 0) {
+                 displayNews(data.articles.slice(0, 6));
+            } else {
+                 throw new Error('No articles found.');
+            }
+           
         } catch (error) {
-            const mockNews = [
-                { title: 'Technology Advances in 2025', url: 'https://google.com/search?q=technology+news' },
-                { title: 'Climate Change Updates', url: 'https://google.com/search?q=climate+change+news' },
-                { title: 'Space Exploration Milestones', url: 'https://google.com/search?q=space+news' },
-                { title: 'Economic Market Analysis', url: 'https://google.com/search?q=market+news' },
-                { title: 'Health and Wellness Trends', url: 'https://google.com/search?q=health+news' },
-                { title: 'Sports Championship Results', url: 'https://google.com/search?q=sports+news' }
-            ];
-            displayNews(mockNews);
+            console.error('Error fetching real-time news:', error);
+             // Fallback to a message indicating the need for a key
+            newsContent.innerHTML = `
+                <div style="text-align: center; color: #E74C3C;">
+                    News fetching failed.
+                    <br>
+                    Please replace 'YOUR_NEWS_API_KEY' with a <a href="https://newsapi.org/" target="_blank" style="color: #F0E7D6;">valid News API Key</a> to get real-time news.
+                </div>
+            `;
+             // Optionally, re-enable the mock data if a fallback is absolutely necessary for display
+             /*
+             const mockNews = [
+                { title: 'Technology Advances in 2025 (Mock)', url: 'https://google.com/search?q=technology+news' },
+                { title: 'Climate Change Updates (Mock)', url: 'https://google.com/search?q=climate+change+news' },
+                // ... other mock articles
+             ];
+             displayNews(mockNews);
+             */
         }
     };
 
@@ -246,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchNews();
 
-    // --- Favorites Management ---
+    // --- Favorites Management (Unchanged) ---
     let favorites = JSON.parse(localStorage.getItem('berserkFavorites')) || [];
 
     const saveFavorites = () => {
@@ -333,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderFavorites();
 
-    // --- Recent Sites Management ---
+    // --- Recent Sites Management (Unchanged) ---
     let recentSitesData = JSON.parse(localStorage.getItem('berserkRecentSites')) || [];
 
     const saveRecentSites = () => {
@@ -394,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderRecentSites();
 
-    // --- Initialize with default favorites if none exist ---
+    // --- Initialize with default favorites if none exist (Unchanged) ---
     if (favorites.length === 0) {
         const defaultFavorites = [
             { name: 'Google', url: 'https://google.com' },
@@ -406,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderFavorites();
     }
 
-    // --- Keyboard Shortcuts ---
+    // --- Keyboard Shortcuts (Unchanged) ---
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
@@ -420,9 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Auto-refresh intervals ---
-    setInterval(fetchNews, 30 * 60 * 1000);
-    setInterval(fetchWeather, 60 * 60 * 1000);
+    // --- Auto-refresh intervals (Unchanged) ---
+    setInterval(fetchNews, 30 * 60 * 1000); // Refreshes news every 30 minutes
+    setInterval(fetchWeather, 60 * 60 * 1000); // Refreshes weather every 60 minutes
 
     console.log('Berserk Homepage loaded successfully!');
 });

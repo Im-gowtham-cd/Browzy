@@ -2,26 +2,27 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 
 /* Custom Fonts */
 @font-face {
   font-family: 'Lacotte';
-  src: url('./font/Lacotte.ttf') format('truetype');
+  src: url('../font/Lacotte.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Richis';
-  src: url('./font/Richis Stiller.ttf') format('truetype');
+  src: url('../font/Richis Stiller.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Prolinea';
-  src: url('./font/ProlineaDemo-ExtraBlack.ttf') format('truetype');
+  src: url('../font/ProlineaDemo-ExtraBlack.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
 }
@@ -502,6 +503,7 @@
 
 /* Recent Sites */
 .recent {
+  margin-top: -40px;
   display: flex;
   align-items: center;
   gap: 50px;
