@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     fetchWeather();
 
-    // --- Search Functionality with Suggestions ---
     const searchSuggestionsData = [
         'google.com', 'youtube.com', 'facebook.com', 'twitter.com', 'instagram.com',
         'linkedin.com', 'github.com', 'stackoverflow.com', 'reddit.com', 'wikipedia.org',
